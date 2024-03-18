@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			{% block title %}Default Title
+			{% endblock %}
+		</title>
+		<script type="module" src="{{baseUrl}}/dist/index.js"></script>
+	</head>
+	<body>
+		{% block header %}
+			{% include 'partials/header.twig' %}
+		{% endblock %}
+
+		{% block content %}
+			<!-- Content will be replaced by each page -->
+		{% endblock %}
+
+		{% block footer %}
+			{% include 'partials/footer.twig' %}
+		{% endblock %}
+
+		{% block scripts %}
+			<!-- Additional scripts specific to a page can be included here -->
+		{% endblock %}
+	</body>
+</html>
+
