@@ -1,1 +1,0 @@
-import { tsFetch } from "../global.js";
