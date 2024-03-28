@@ -22,10 +22,21 @@ $routeFound = false;
 
 foreach ($routes as $key => $route) {
 	if ($path === $key) {
-		$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET], $route['params'] ?? []);
-		echo $twig->render($route['template'], $params);
 		$routeFound = true;
-		break;
+
+
+		if ($route['controller']) {
+			$fullyQualifiedClassName = 'Controllers\\' . str_replace('/', '\\', $route['controller'][0]);
+			$class_object = new $fullyQualifiedClassName();
+			$method = $route['controller'][1];
+			$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET], $route['params'] ?? [], $class_object->$method()['params'] ?? []);
+			echo $twig->render($class_object->$method()['view'], $params);
+		} elseif ($route['view']) {
+			$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET], $route['params'] ?? []);
+			echo $twig->render($route['view'], $params);
+		} else {
+			$routeFound = false;
+		}
 	}
 }
 

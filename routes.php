@@ -1,11 +1,8 @@
 <?php
 /* Example
-use Controllers\Category_name\File_name\File_name;
-
-$obj = new File_name;
-
 'route_name' => [
-	'template' => 'category/file.twig',
+	'view' => 'category/file.twig', // this
+	'controller' => 'controller' => ['category_path/file, 'method_name'], //or this example: 'controller' => ['Cat/File/File', 'func'],
 	'params' => [
 		'specialParam' => 'Param value',
 	]
@@ -14,6 +11,6 @@ $obj = new File_name;
 
 $routes = [
 	'/' => [
-		'template' => 'index.twig',
+		'view' => 'index.twig',
 	],
 ];
