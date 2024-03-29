@@ -24,7 +24,6 @@ foreach ($routes as $key => $route) {
 	if ($path === $key) {
 		$routeFound = true;
 
-
 		if ($route['controller']) {
 			$fullyQualifiedClassName = 'Controllers\\' . str_replace('/', '\\', $route['controller'][0]);
 			$class_object = new $fullyQualifiedClassName();
