@@ -35,7 +35,9 @@ use Config\Database;
 
 class {$fetch_name} extends Database
 {
-
+	public function index(){
+		return ['view' => '{$category_name}/{$fetch_name}.twig', 'params' => []];
+	}
 }
 HTML;
 
