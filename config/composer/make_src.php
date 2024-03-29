@@ -64,7 +64,7 @@ $view_content = <<<HTML
 {% endblock %}
 
 {% block scripts %}
-<script type="module" src="{{ versioned_asset('dist/{$category_name}/{$fetch_name}.js') }}"></script>
+<script type="module" src="{{ asset('dist/{$category_name}/{$fetch_name}.js') }}"></script>
 {% endblock %}
 HTML;
 

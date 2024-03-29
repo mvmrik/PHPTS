@@ -21,7 +21,17 @@ foreach ($allFunctions as $functionName) {
 $routeFound = false;
 
 foreach ($routes as $key => $route) {
-	if ($path === $key) {
+
+	if (preg_match('/^(\w+)\{(.*?)\}$/', $key, $matchesRouteParams)) { // if isset dynamic param in route
+		$routeDynamicParam = $matchesRouteParams[2];
+
+		$key = $matchesRouteParams[1];
+		if (preg_match("/^$key\/([a-zA-Z0-9_-]+)$/", $path, $matchesRouteDynamicValue)) {
+			$routeWithParamValue = "$key/{$matchesRouteDynamicValue[1]}";
+		}
+	}
+
+	if ($path === $key || $path === $routeWithParamValue) {
 		$routeFound = true;
 
 		if ($route['controller']) {
@@ -31,7 +41,7 @@ foreach ($routes as $key => $route) {
 			$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET], $route['params'] ?? [], $class_object->$method()['params'] ?? []);
 			echo $twig->render($class_object->$method()['view'], $params);
 		} elseif ($route['view']) {
-			$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET], $route['params'] ?? []);
+			$params = array_merge(['baseUrl' => $_ENV['BASE_URL'], 'get' => $_GET, $routeDynamicParam => $matchesRouteDynamicValue[1]], $route['params'] ?? []);
 			echo $twig->render($route['view'], $params);
 		} else {
 			$routeFound = false;
