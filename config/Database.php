@@ -2,30 +2,35 @@
 
 namespace Config;
 
-use PDO;
-use PDOException;
+use Nette\Database\Connection;
+use Nette\Database\Explorer;
+use Nette\Database\Structure;
+use Nette\Caching\Storages\FileStorage;
 
 class Database
 {
-	public function db()
+	protected $explorer;
+
+	public function __construct()
+	{
+		$this->initializeExplorer();
+	}
+
+	protected function initializeExplorer()
 	{
 		$host = $_ENV['DB_HOST'];
-		$port = $_ENV['DB_PORT'];
 		$dbname = $_ENV['DB_DATABASE'];
 		$user = $_ENV['DB_USERNAME'];
 		$password = $_ENV['DB_PASSWORD'];
 
-		$dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+		$cacheStorage = new FileStorage(__DIR__ . '/../cache');
 
-		try {
-			$pdo = new PDO($dsn, $user, $password, [
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-				PDO::ATTR_EMULATE_PREPARES => false,
-			]);
-			return $pdo;
-		} catch (PDOException $e) {
-			die("Could not connect to the database $dbname :" . $e->getMessage());
-		}
+		$connection = new Connection(
+			"mysql:host=$host;dbname=$dbname",
+			$user,
+			$password
+		);
+		$structure = new Structure($connection, $cacheStorage);
+		$this->explorer = new Explorer($connection, $structure);
 	}
 }
