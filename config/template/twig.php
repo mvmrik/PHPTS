@@ -4,11 +4,22 @@ require_once 'AppExtension.php';
 $path = isset($_GET['path']) ? rtrim($_GET['path'], '/') : '/';
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../../views/');
-$twig = new \Twig\Environment($loader, [
-	'cache' => __DIR__ . '/../../cache/',
-	'auto_reload' => true,
-	'debug' => true
-]);
+
+$appEnv = $_ENV['APP_ENV'] ?? 'production';
+if ($appEnv === 'local') {
+	$twigOptions = [
+		'cache' => false,
+		'auto_reload' => true,
+		'debug' => true,
+	];
+} else {
+	$twigOptions = [
+		'cache' => __DIR__ . '/../../cache/',
+		'auto_reload' => false,
+		'debug' => false,
+	];
+}
+$twig = new \Twig\Environment($loader, $twigOptions);
 
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 $twig->addExtension(new \Twig\AppExtension());
