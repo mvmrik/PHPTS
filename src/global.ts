@@ -1,5 +1,5 @@
-export async function tsFetch(option: { fetchUrl: string; formElement?: HTMLFormElement; postData?: Object }) {
-	const fetchUrl = option.fetchUrl;
+export async function tsFetch(option: { formElement?: HTMLFormElement; postData?: Object }) {
+	let fetchUrl = "./config/api.php";
 	const formElement = option.formElement;
 	const postData = option.postData;
 

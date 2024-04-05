@@ -11,6 +11,6 @@
 
 $routes = [
 	'/' => [
-		'view' => 'index.twig',
+		'view' => 'index.twig'
 	]
 ];

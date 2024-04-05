@@ -39,7 +39,7 @@ export function tsFetch(option) {
         var fetchUrl, formElement, postData, sentData, fetchData;
         var _this = this;
         return __generator(this, function (_a) {
-            fetchUrl = option.fetchUrl;
+            fetchUrl = "./config/api.php";
             formElement = option.formElement;
             postData = option.postData;
             sentData = function () { return __awaiter(_this, void 0, void 0, function () {

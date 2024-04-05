@@ -18,18 +18,13 @@ if (!file_exists($directory_ts)) {
 	mkdir($directory_ts, 0755, true);
 }
 
-if (!file_exists("$directory_php/$fetch_name")) {
-	mkdir("$directory_php/$fetch_name", 0755, true);
-}
-
-$class_filename = "{$directory_php}/{$fetch_name}/{$fetch_name}.php";
-$index_filename = "{$directory_php}/{$fetch_name}/json.php";
+$class_filename = "{$directory_php}/{$fetch_name}.php";
 $ts_filename = "{$directory_ts}/{$fetch_name}.ts";
 
 $class_content = <<<HTML
 <?php
 
-namespace Controllers\\{$category_name}\\{$fetch_name};
+namespace Controllers\\{$category_name};
 
 use Config\Database;
 
@@ -41,15 +36,9 @@ class {$fetch_name} extends Database
 }
 HTML;
 
-$index_content = <<<HTML
-<?php
-require '../../../index.php';
+$ts_content = <<<HTML
+import { tsFetch } from './../global.js';
 
-use Controllers\\{$category_name}\\{$fetch_name}\\{$fetch_name};
-
-\$post = json_decode(file_get_contents('php://input'));
-
-\$obj = new {$fetch_name};
 HTML;
 
 $view_content = <<<HTML
@@ -64,13 +53,12 @@ $view_content = <<<HTML
 {% endblock %}
 
 {% block scripts %}
-<script type="module" src="{{ asset('dist/{$category_name}/{$fetch_name}.js') }}"></script>
+<script type="module" src="{{ asset('js/{$category_name}/{$fetch_name}.js') }}"></script>
 {% endblock %}
 HTML;
 
 file_put_contents($class_filename, $class_content);
-file_put_contents($index_filename, $index_content);
-file_put_contents($ts_filename, '');
+file_put_contents($ts_filename, $ts_content);
 
 if ($argv[3] && $argv[3] == 'view') {
 	$directory_view = "views/$category_name";

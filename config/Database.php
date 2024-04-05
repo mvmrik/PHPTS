@@ -31,6 +31,6 @@ class Database
 			$password
 		);
 		$structure = new Structure($connection, $cacheStorage);
-		$this->explorer = new Explorer($connection, $structure);
+		$this->db = new Explorer($connection, $structure);
 	}
 }
